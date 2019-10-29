@@ -4,8 +4,8 @@
 *.depend
 
 #compilation directories
-./bin/
-./obj/
+/bin/
+/obj/
 
 # Prerequisites
 *.d
