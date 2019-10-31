@@ -52,3 +52,27 @@ char* requireflagarg(char** arguments, int argument_count, char* flag){
     return 0;
 
 }
+
+//prints the flag that is used between the two alternatives
+char* chooseflag(char** arguments, int argument_count, char* flag1, char* flag2){
+
+    //if the first flag is used
+    if(requireflag(arguments,argument_count,flag1)){
+
+        //returns the first flag
+        return flag1;
+
+    }else if(requireflag(arguments,argument_count,flag2)){  //if the second flag is used
+
+        //returns the second flag
+        return flag2;
+
+    }else{      //if no mach is found
+
+        //returns error code
+        printf("Error: Flag %s or %s required, but not found\n",flag1,flag2);
+        exit(-1);
+
+    }
+
+}
