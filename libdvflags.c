@@ -2,48 +2,53 @@
 
 
 
-//checks if a flag is triggered
-int checkflag(char** arguments, int arnum,char* flag){
+int requireflag(char** arguments, int argument_count, char* flag){
 
-    //checks the flag among all the others
-    for(int counter = 1; counter < arnum; counter++){
+    for(int counter = 1; counter < argument_count; counter++){
 
-        //if it finds it, returns true
-        if(!strcmp(arguments[counter],flag)) return 1;
+        //if the flag is found
+        if(!strcmp(arguments[counter],flag)){
+
+            //returns 1
+            return 1;
+        }
 
     }
 
-    //otherwise returns false
+    //if the flag doesn't exist returns 0
     return 0;
+
 }
 
-//checks if a flag is triggered
-int checkval(char** arguments, int arnum,char* flag){
+char* requireflagarg(char** arguments, int argument_count, char* flag){
 
-    //checks the flag among all the others
-    for(int counter = 1; counter < arnum; counter++){
 
-        //if it finds it
-        if( !strcmp(arguments[counter],flag) && counter != arnum - 1 ){
+    for(int counter = 1; counter < argument_count; counter++){
 
-            //if the first character in a "-" it assumes that it's a flag and returns false, otherwise true
-            return arguments[counter+1][0] == '-'? 0 : 1 ;
+        //if a mach is found
+        if(!strcmp(arguments[counter],flag)){
+
+            //if the argument is accessible
+            if((counter < argument_count -1 ) && arguments[counter + 1][0] != '-' ){
+
+                //the argument is returned
+                return arguments[counter + 1];
+
+            }else{  //otherwise
+
+                //prints an error message
+                printf("Error: Flag \"%s\" used, but no argument specyfied\n",arguments[counter]);
+
+                //exits with error code
+                exit(-1);
+
+            }
 
         }
+
     }
 
-    //otherwise returns false
+    //if the flag doesn't exist returns 0
     return 0;
-}
 
-//gets the argument of a flag
-char* getflagval(char** arguments, int arnum, char* flag){
-
-    //checks the flag among all the others
-    for(int counter = 1; counter < arnum; counter++){
-
-        //if it finds it, returns the argument after it
-        if(!strcmp(arguments[counter],flag)) return arguments[counter+1];
-
-    }
 }

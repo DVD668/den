@@ -1,40 +1,80 @@
-#include <stdio.h>
-#include <stdlib.h>
-
+#include "dvfiles.h"
 
 //loads the file on memory
-char* load(char* fname,int* fsize){
+char* readfile(char* fname){
+
+    //checks if the file exists
+    existfile(fname);
+
+    //opens the file
+    FILE *fl;
+    fl = fopen(fname,"rb+");
+
+    //gets the lenght of the file
+    fseek(fl,0,SEEK_END);
+    int fsize = ftell(fl);
+    rewind(fl);
+
+    //gets all the necessary memory
+    char* content = malloc(fsize);
+
+    //reads the file and returns its content
+    fread(content,fsize,1,fl);
+
+    //closes the file
+    fclose(fl);
+
+    //returns the file content
+    return content;
+
+}
+
+//gets the size of the file
+int getfilesize(char* fname){
+
+    //checks if the file exists
+    existfile(fname);
+
     //opens the file
     FILE *fl;
     fl = fopen(fname,"rb");
 
     //gets the lenght of the file
     fseek(fl,0,SEEK_END);
-    *fsize = ftell(fl);
-    rewind(fl);
+    int fsize = ftell(fl);
 
-    //gets all the necessary memory
-    char* content = malloc(*fsize);
+    //closes the file
+    fclose(fl);
 
-    //reads the file and returns its content
-    fread(content,*fsize,1,fl);
-    return content;
+    //returns the file size
+    return fsize;
+}
+
+//writes char string to file
+void writefile(char* filename,char* content, int contentlen){
+
+    //opens the file
+    FILE *fl;
+    fl = fopen(filename,"wb");
+
+    //writes the content
+    fwrite(content,contentlen,1,fl);
 
     //closes the file
     fclose(fl);
 
 }
 
+//checks if the file exists
+void existfile(char* fname){
 
-//writes char array to file
-void writefile(char* filename,char* content, int contentlen){
-    //opens the file
-    FILE *fl;
-    fl = fopen(filename,"wb");
+    if(access(fname,F_OK)==-1){//if the file doesn't exist
 
-    //writes the content
-    rewind(fl);
-    fwrite(content,contentlen,1,fl);
-    fclose(fl);
+               //prints error code
+        printf("Error: The file \"%s\" doesn't exist or is unaccessible\n",fname);
 
+        //exits with error
+        exit(-1);
+
+    }
 }

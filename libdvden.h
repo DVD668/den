@@ -3,7 +3,7 @@
 
 
 //adds 128 to the caracter, making it easier to use
-int bitfix(int a);
+static inline int bitfix(int a);
 
 
 //encrypts the string by adding, from the beginning to the end
