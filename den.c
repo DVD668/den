@@ -1,6 +1,6 @@
 
 //defines the help message macro
-#define HELP_MESSAGE "Uso: den [options] [file]\n"
+#define HELP_MESSAGE "Usage: den [options] file\nOptions:\n   -dwf, --decrypt-with-file <key_file>\t\tDecrypts the file by using another file as a key\n   -dwp, --decrypt-with-password <password>\tDecrypts the file by using an user-specified password\n   -ewf, --encrypt-with-file <key_file>\t\tEncrypts the file by using another file as a key\n   -ewp, --encrypt-with-password <password>\tEncrypts the file by using an user-specified password\n   -h, --help\t\t\t\t\tPrints this message on the screen and exits\n   -o, --output <output_file>\t\t\tSelects the name of the output file\n"
 
 #include "libdvden.h"
 #include "dvfiles.h"
@@ -12,10 +12,10 @@ int main(int arn, char* ar[]){
 
 
     //if the arguments are less than 4
-    if(arn < 4){
+    if(arn < 2){
 
         //prints error message
-        printf("Error: Not enought arguments specified\n");
+        printf("Error: No arguments specified\n");
         exit(-1);
 
     }
@@ -115,6 +115,11 @@ int main(int arn, char* ar[]){
         //decrypts the buffer
         dvddecrypt(file_content,key,file_size,key_size);
 
+    }else{
+
+        //returns error message
+        printf("Error: No encryption arguments specified\n");
+        exit(-1);
     }
 
     if( requireflag(ar,arn,"--output") || requireflag(ar,arn,"-o") ){   //if an output file is specified
