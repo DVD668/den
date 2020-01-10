@@ -1,104 +1,79 @@
 #include "libdvden.h"
 
 
-//adds 128 to the caracter, making it easier to use
-static inline int bitfix(int a){
-    if(a<0)return a+256; else return a;
-}
-
-
 //encrypts the string by adding, from the beginning to the end
-void da(char* str, char* key, int strl,int keyl){
+void da(unsigned char *str, unsigned char *key, int strl,int keyl){
 
-    //starts from the beginning
-    int counter = 0;
-
-    //encrypts
-    while(counter < strl-1){
+    //encrypts starting from the beginning
+    for( int counter = 0; counter < strl-1; counter++){
 
         //sets the new bit value
-        str[counter] = bitfix(str[counter]) + bitfix(str[counter+1]) + bitfix(key[counter%keyl]);
+        str[counter] = str[counter] + str[counter+1] + key[counter%keyl];
 
-        //goes to the next bit
-        counter++;
     }
 
     //the last caracter is encrypted after, to avoid sigmentation faults
-    str[strl-1] = bitfix(str[strl-1]) + bitfix(key[(strl-1)%keyl]);
+    str[strl-1] = str[strl-1] + key[(strl-1)%keyl];
 }
 
 
 //encrypts the string by adding, from the end to the beginning
-void rda(char* str, char* key, int strl,int keyl){
-    //starts from the end
-    int counter = strl-1;
+void rda(unsigned char *str, unsigned char *key, int strl,int keyl){
 
-    //encrypts
-    while(counter>0){
+    //encrypts starting from the end
+    for( int counter = strl-1 ; counter>0; counter--){
 
         //sets the bit value
-        str[counter] = bitfix(str[counter]) + bitfix(str[counter-1]) + bitfix(key[(strl-counter-1)%keyl]);
+        str[counter] = str[counter] + str[counter-1] + key[(strl-counter-1)%keyl];
 
-        //goes to the next bit
-        counter--;
     }
 
     //the last caracter is encrypted after, to avoid sigmentation faults
-    str[0] = bitfix(str[0]) + bitfix(key[(strl-1)%keyl]);
+    str[0] = str[0] + key[(strl-1)%keyl];
 }
 
 
 //complementar to da(); decrypts the string by removing, from the end to the beginning
-void cda(char* str, char* key, int strl,int keyl){
+void cda(unsigned char *str, unsigned char *key, int strl,int keyl){
 
     //the last caracter is decrypted before, to avoid sigmentation faults
-    str[strl-1] = bitfix(str[strl-1]) - bitfix(key[(strl-1)%keyl]);
+    str[strl-1] = str[strl-1] - key[(strl-1)%keyl];
 
-    //starts from the end
-    int counter = strl-2;
-
-    //encrypts
-    while(counter >= 0){
+    //encrypts starting from the end
+    for(int counter = strl-2; counter >= 0; counter--){
 
         //sets the new bit value
-        str[counter] = bitfix(str[counter]) - bitfix(str[counter+1]) - bitfix(key[counter%keyl]);
+        str[counter] = str[counter] - str[counter+1] - key[counter%keyl];
 
-        //goes to the next bit
-        counter--;
     }
 }
 
 //complementar to rda();    decrypts the string by removing, from the beginning to the end
-void crda(char* str, char* key, int strl,int keyl){
-
-    //starts from the beginning
-    int counter = 1;
+void crda(unsigned char *str, unsigned char *key, int strl,int keyl){
 
      //the first caracter is encrypted before, to avoid sigmentation faults
-    str[0] = bitfix(str[0]) - bitfix(key[(strl-1)%keyl]);
+    str[0] = str[0] - key[(strl-1)%keyl];
 
-    //encrypts
-    while(counter<strl){
+    //encrypts atarting from the beginning
+    for( int counter = 1; counter<strl; counter++){
 
         //sets the bit value
-        str[counter] = bitfix(str[counter]) - bitfix(str[counter-1]) - bitfix(key[(strl-counter-1)%keyl]);
+        str[counter] = str[counter] - str[counter-1] - key[(strl-counter-1)%keyl];
 
-        //goes to the next bit
-        counter++;
     }
 }
 
 
 
 //default encryption procedure
-void dvdencrypt(char* str,char* key,int strl,int keyl){
+void dvdencrypt( char *str, char *key,int strl,int keyl){
     da(str,key,strl,keyl);
     rda(str,key,strl,keyl);
 }
 
 
 //default decryption procedure
-void dvddecrypt(char* str,char* key,int strl,int keyl){
+void dvddecrypt( char *str, char *key,int strl,int keyl){
     crda(str,key,strl,keyl);
     cda(str,key,strl,keyl);
 }

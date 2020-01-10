@@ -2,32 +2,28 @@
 #define LIBDVDEN_H_INCLUDED
 
 
-//adds 128 to the caracter, making it easier to use
-static inline int bitfix(int a);
-
-
 //encrypts the string by adding, from the beginning to the end
-void da(char* str,char* key,int strl,int keyl);
+void da(unsigned char *str,unsigned char *key,int strl,int keyl);
 
 
 //encrypts the string by adding, from the end to the beginning
-void rda(char* str,char* key,int strl,int keyl);
+void rda(unsigned char *str,unsigned char *key,int strl,int keyl);
 
 
 //complementar to da; decrypts the string by removing, from the end to the beginning
-void cda(char* str,char* key,int strl,int keyl);
+void cda(unsigned char *str,unsigned char *key,int strl,int keyl);
 
 
 //complementar to rda; decrypts the string by removing, from the beginning to the end
-void crda(char* str,char* key,int strl,int keyl);
+void crda(unsigned char *str,unsigned char *key,int strl,int keyl);
 
 
 //default encryption procedure
-void dvdencrypt(char* str,char* key,int strl,int keyl);
+void dvdencrypt( char *str, char *key,int strl,int keyl);
 
 
 //default decryption procedure
-void dvddecrypt(char* str,char* key,int strl,int keyl);
+void dvddecrypt( char *str, char *key,int strl,int keyl);
 
 
 #endif // LIBDVDEN_H_INCLUDED
