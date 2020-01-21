@@ -2,7 +2,7 @@
 
 
 //encrypts the string by adding, from the beginning to the end
-void da(unsigned char *str, unsigned char *key, int strl,int keyl){
+void da(char* str, char* key, int strl,int keyl){
 
     //encrypts starting from the beginning
     for( int counter = 0; counter < strl-1; counter++){
@@ -18,7 +18,7 @@ void da(unsigned char *str, unsigned char *key, int strl,int keyl){
 
 
 //encrypts the string by adding, from the end to the beginning
-void rda(unsigned char *str, unsigned char *key, int strl,int keyl){
+void rda(char* str, char* key, int strl,int keyl){
 
     //encrypts starting from the end
     for( int counter = strl-1 ; counter>0; counter--){
@@ -34,7 +34,7 @@ void rda(unsigned char *str, unsigned char *key, int strl,int keyl){
 
 
 //complementar to da(); decrypts the string by removing, from the end to the beginning
-void cda(unsigned char *str, unsigned char *key, int strl,int keyl){
+void cda(char* str, char* key, int strl,int keyl){
 
     //the last caracter is decrypted before, to avoid sigmentation faults
     str[strl-1] = str[strl-1] - key[(strl-1)%keyl];
@@ -49,7 +49,7 @@ void cda(unsigned char *str, unsigned char *key, int strl,int keyl){
 }
 
 //complementar to rda();    decrypts the string by removing, from the beginning to the end
-void crda(unsigned char *str, unsigned char *key, int strl,int keyl){
+void crda(char* str, char* key, int strl,int keyl){
 
      //the first caracter is encrypted before, to avoid sigmentation faults
     str[0] = str[0] - key[(strl-1)%keyl];

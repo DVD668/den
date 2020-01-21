@@ -16,7 +16,7 @@ int main(int arn, char* ar[]){
 
         //prints error message
         printf("Error: No arguments specified\n");
-        exit(-1);
+        exit(1);
 
     }
 
@@ -119,7 +119,7 @@ int main(int arn, char* ar[]){
 
         //returns error message
         printf("Error: No encryption arguments specified\n");
-        exit(-1);
+        exit(1);
     }
 
     if( requireflag(ar,arn,"--output") || requireflag(ar,arn,"-o") ){   //if an output file is specified

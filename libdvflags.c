@@ -40,7 +40,7 @@ char* requireflagarg(char** arguments, int argument_count, char* flag){
                 printf("Error: Flag \"%s\" used, but no argument specyfied\n",arguments[counter]);
 
                 //exits with error code
-                exit(-1);
+                exit(1);
 
             }
 
@@ -71,7 +71,7 @@ char* chooseflag(char** arguments, int argument_count, char* flag1, char* flag2)
 
         //returns error code
         printf("Error: Flag %s or %s required, but not found\n",flag1,flag2);
-        exit(-1);
+        exit(1);
 
     }
 
