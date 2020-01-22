@@ -112,7 +112,7 @@ void existfile(char* fname){
         printf("Error: The file \"%s\" doesn't exist or is unaccessible\n",fname);
 
         //exits with error
-        exit(-1);
+        exit(1);
 
     }
 }
