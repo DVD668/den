@@ -2,7 +2,7 @@
 #define DEN_PROTOCOL_INCLUDED
 
 //defines the encryption block size
-#define BLOCK_SIZE 102400
+#define BLOCK_SIZE 1048576
 
 //encrypts the file part by part and writes it
 void write_and_encrypt(char*,char*,char*,long int,int);
