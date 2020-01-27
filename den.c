@@ -73,9 +73,6 @@ int main(int arn, char* ar[]){
     //adds the ".temp" extension to the file
     strcat(temporary_output_file_name,".temp");
 
-    //adds the ".temp" extension to the file
-    strcat(temporary_output_file_name,".temp");
-
 
     if( requireflag(ar,arn,"--encrypt-with-password") || requireflag(ar,arn,"-ewp") ){ //encrypting with password
 
