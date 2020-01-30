@@ -3,7 +3,7 @@
 #define HELP_MESSAGE "Usage: den [options] file\nOptions:\n   -dwf, --decrypt-with-file <key_file>\t\tDecrypts the file by using another file as a key\n   -dwp, --decrypt-with-password <password>\tDecrypts the file by using an user-specified password\n   -ewf, --encrypt-with-file <key_file>\t\tEncrypts the file by using another file as a key\n   -ewp, --encrypt-with-password <password>\tEncrypts the file by using an user-specified password\n   -h, --help\t\t\t\t\tPrints this message on the screen and exits\n   -o, --output <output_file>\t\t\tSelects the name of the output file\n"
 
 #include "libdvflags.h"
-#include "den_protocol.h"
+#include "libdvden.h"
 #include "dvfiles.h"
 
 //main function
@@ -31,11 +31,8 @@ int main(int arn, char* ar[]){
     //gets the input file name from the last argument
     char* input_file_name = ar[arn-1];
 
-    //gets the output file name
-    char* temporary_output_file_name;
-
-    //original name of the output file
-    char* original_output_file_name;
+    //the output file name
+    char* output_file_name;
 
     //declares a char pointer containing the user-specified flags
     char* used_flag;
@@ -49,29 +46,21 @@ int main(int arn, char* ar[]){
     //gets the file size
     long int file_size = getfilesize(input_file_name);
 
+    //reads the file's content
+    char* content = readfile(input_file_name);
+
+    //if the "--output" flag is used
     if( requireflag(ar,arn,"--output") || requireflag(ar,arn,"-o") ){
 
-        // sets the original name
-        original_output_file_name = requireflagarg(ar,arn, chooseflag(ar,arn,"--output","-o"));
+        // sets the output name
+        output_file_name = requireflagarg(ar,arn, chooseflag(ar,arn,"--output","-o"));
 
-        //allocates the memory for the name with the new extension
-        temporary_output_file_name = calloc( strlen(original_output_file_name) + 5, 1);
+    }else{
 
-        //copies the original name into the string
-        strcpy(temporary_output_file_name,original_output_file_name);
-
-    }else{        //otherwise it assumes that it's the same of the input file
-
-        //allocates the memory for the name with the new extension
-        temporary_output_file_name = calloc( strlen(input_file_name) + 4, 1);
-
-        //in the end the output file and the input one will have the same name
-        original_output_file_name = input_file_name;
+        //otherwise replaces the input file
+        output_file_name = input_file_name;
 
     }
-
-    //adds the ".temp" extension to the file
-    strcat(temporary_output_file_name,".temp");
 
 
     if( requireflag(ar,arn,"--encrypt-with-password") || requireflag(ar,arn,"-ewp") ){ //encrypting with password
@@ -85,8 +74,8 @@ int main(int arn, char* ar[]){
         //gest the key's size
         key_size = strlen(key);
 
-        //writes the output file and encrypts the buffer
-        write_and_encrypt(temporary_output_file_name,input_file_name,key,file_size,key_size);
+        //encrypts the buffer
+        dvdencrypt(content,key,file_size,key_size);
 
     }else if( requireflag(ar,arn,"--encrypt-with-file") || requireflag(ar,arn,"-ewf") ){ //encrypting with file
 
@@ -104,8 +93,8 @@ int main(int arn, char* ar[]){
         //gest the key's size
         key_size = getfilesize(keyfile_name);
 
-        //writes the output file and encrypts the buffer
-        write_and_encrypt(temporary_output_file_name,input_file_name,key,file_size,key_size);
+        //encrypts the buffer
+        dvdencrypt(content,key,file_size,key_size);
 
     }else if( requireflag(ar,arn,"--decrypt-with-password") || requireflag(ar,arn,"-dwp") ){//decrypting with password
 
@@ -118,8 +107,8 @@ int main(int arn, char* ar[]){
         //gest the key's size
         key_size = strlen(key);
 
-        //writes the output file and encrypts the buffer
-        write_and_decrypt(temporary_output_file_name,input_file_name,key,file_size,key_size);
+        //decrypts the buffer
+        dvddecrypt(content,key,file_size,key_size);
 
     }else if( requireflag(ar,arn,"--decrypt-with-file") || requireflag(ar,arn,"-dwf") ){//encrypting with file
 
@@ -135,8 +124,8 @@ int main(int arn, char* ar[]){
         //gest the key's size
         key_size = getfilesize(keyfile_name);
 
-        //writes the output file and encrypts the buffer
-        write_and_decrypt(temporary_output_file_name,input_file_name,key,file_size,key_size);
+        //decrypts the buffer
+        dvddecrypt(content,key,file_size,key_size);
 
     }else{
 
@@ -145,11 +134,8 @@ int main(int arn, char* ar[]){
         exit(1);
     }
 
-    //removes the old file
-    remove(original_output_file_name);
-
-    //renames the temporary file
-    rename(temporary_output_file_name,original_output_file_name);
+    //finally writes the file
+    writefile(output_file_name,content,file_size);
 
     return 0;
 }
