@@ -4,13 +4,13 @@ compile: $(program_name)
 
 $(program_name): *.o
 
-	@echo linking den...
+	@echo linking $(program_name)...
 
 	@cc -fopenmp -o $(program_name) *.o
 
 *.o:
 
-	@echo compiling den...
+	@echo compiling $(program_name)...
 
 	@cc -fopenmp -c *.c
 
