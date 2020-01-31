@@ -5,6 +5,7 @@
 void da(char* str, char* key, int strl,int keyl){
 
     //encrypts starting from the beginning
+    #pragma omp parallel for    //parallelization, to optimize CPU usage
     for( int counter = 0; counter < strl-1; counter++){
 
         //sets the new bit value
@@ -21,6 +22,7 @@ void da(char* str, char* key, int strl,int keyl){
 void rda(char* str, char* key, int strl,int keyl){
 
     //encrypts starting from the end
+    #pragma omp parallel for    //parallelization, to optimize CPU usage
     for( int counter = strl-1 ; counter>0; counter--){
 
         //sets the bit value
@@ -40,6 +42,7 @@ void cda(char* str, char* key, int strl,int keyl){
     str[strl-1] = str[strl-1] - key[(strl-1)%keyl];
 
     //encrypts starting from the end
+    #pragma omp parallel for    //parallelization, to optimize CPU usage
     for(int counter = strl-2; counter >= 0; counter--){
 
         //sets the new bit value
@@ -55,6 +58,7 @@ void crda(char* str, char* key, int strl,int keyl){
     str[0] = str[0] - key[(strl-1)%keyl];
 
     //encrypts atarting from the beginning
+    #pragma omp parallel for    //parallelization, to optimize CPU usage
     for( int counter = 1; counter<strl; counter++){
 
         //sets the bit value

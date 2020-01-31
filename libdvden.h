@@ -1,6 +1,9 @@
 #ifndef LIBDVDEN_H_INCLUDED
 #define LIBDVDEN_H_INCLUDED
 
+//includes the process parallelization library<
+#include <omp.h>
+
 
 //encrypts the string by adding, from the beginning to the end
 void da(char* str,char* key,int strl,int keyl);

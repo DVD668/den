@@ -6,13 +6,13 @@ $(program_name): *.o
 
 	@echo linking den...
 
-	@cc -o $(program_name) *.o
+	@cc -fopenmp -o $(program_name) *.o
 
 *.o:
 
 	@echo compiling den...
 
-	@cc -c *.c
+	@cc -fopenmp -c *.c
 
 clean:
 	@echo removing object files and binary...
